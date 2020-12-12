@@ -96,19 +96,6 @@ if (tL(CMD_NAME) === 'test') {
  *  Shop
  * 
  */
-/*if (tL(CMD_NAME) === 'shop') {  
-  //embed
-const shop = new Discord.MessageEmbed()
-.setTitle("Venge Shop")
-.setColor("2F3136")
-.setFooter("Made by ooops#0001 and Izzibaby#5917 • ", client.user.avatarURL())
-.setTimestamp()
-.setImage("https://cdn.discordapp.com/attachments/758767922955943997/781963637580628048/soda.jpg")
-.addField("________", "**Skin Name:** Gaze of Zues\n **Cost:** ONLY FROM CRATES\n **Rarity:** Legendary" )
-.addField("________", "**Skin Name:** Eye\n **Cost:** ONLY FROM CRATES\n **Rarity:** Common" )
-.addField("________", "**Skin Name:** Venge Soda\n **Cost:** 1000 VG\n **Rarity:** Common" )
-message.channel.send(shop);
-};*/
 const shopfetch = await fetch(`https://gateway.venge.io/?request=get_offers&version=13`).then(response => response.json())
 if(tL(CMD_NAME) === 'shop'){
   const generateEmbed = start => {
