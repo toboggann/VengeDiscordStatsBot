@@ -109,7 +109,7 @@ const shop = new Discord.MessageEmbed()
 .addField("________", "**Skin Name:** Venge Soda\n **Cost:** 1000 VG\n **Rarity:** Common" )
 message.channel.send(shop);
 };*/
-const shopfetch = await fetch(`https://gateway.venge.io/?request=get_offers&version=11`).then(response => response.json())
+const shopfetch = await fetch(`https://gateway.venge.io/?request=get_offers&version=13`).then(response => response.json())
 if(tL(CMD_NAME) === 'shop'){
   const generateEmbed = start => {
     const leaderboardEmbed = new Discord.MessageEmbed()
@@ -120,15 +120,16 @@ if(tL(CMD_NAME) === 'shop'){
 
     for (i = start; i <= start; i++) {
         leaderboardEmbed.addFields({name: shopfetch.items[i].name, value: `Price: ` + price + "\n Rarity: " + shopfetch.items[i].rarity + "\n Type: " + shopfetch.items[i].class})
-        if(shopfetch.items[i].id == "87"){
-        shipimage = "https://cdn.discordapp.com/attachments/771384828503261204/782800603079901194/gaze_of_zues.PNG";
+        if(shopfetch.items[i].id == "94"){
+        shipimage = "https://cdn.discordapp.com/attachments/426798993419534379/787225402200293376/unknown.png";
         price = "ONLY IN CRATES";
-    }   else if(shopfetch.items[i].id == "86"){
-        shipimage = "https://cdn.discordapp.com/attachments/771384828503261204/782800600488083486/eye_of_whoreus.PNG";
-        price = "ONLY IN CRATES";
-        }else {
-        shipimage = "https://cdn.discordapp.com/attachments/771384828503261204/782800604497838100/benge_soda.PNG";
+    }   else if(shopfetch.items[i].id == "94"){
+        shipimage = "https://cdn.discordapp.com/attachments/426798993419534379/787225657661849600/unknown.png";
         price = shopfetch.items[i].price;
+      }
+        else {
+        shipimage = "https://cdn.discordapp.com/attachments/426798993419534379/787226201180733450/unknown.png";
+        price = "ONLY IN CRATES";
         }
         leaderboardEmbed.setImage(shipimage)
       }
@@ -137,7 +138,7 @@ if(tL(CMD_NAME) === 'shop'){
 }
 
 const author = message.author
-message.channel.send('Searching for user...')
+message.channel.send('Searching for shop...')
 message.channel.send(generateEmbed(0)).then(message => {
 
 message.react('➡️')
