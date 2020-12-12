@@ -750,4 +750,4 @@ message.channel.send("**Please give a leaderboard to fetch score | daily | popul
   }
 });
 
-client.login("NzgyNDA1NzY0Mjk1MTYzOTA2.X8LuJg.-K0Z97NDM-Z20ED5eOfh4oLnyYA");
+client.login(token.process.env);
