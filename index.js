@@ -749,5 +749,5 @@ message.channel.send("**Please give a leaderboard to fetch score | daily | popul
 
   }
 });
-
+//
 client.login(process.env.token);
