@@ -5,7 +5,7 @@ const puppeteer = require('puppeteer');
 const fetch = require("node-fetch");
 const foot = "Made by ooops#0001 and Izzibaby#5917";  
 const Canvas = require('canvas');
-
+const v = "2.0.0";
 function iN(a) { return /^\d+$/.test(a); } function iO(a) { return a.match('^[/*+-]{1}$') == null ? !1 : !0; } mC = { '/': function(a, b) { return a / b; }, '*': function(a, b) { return a * b; }, '-': function(a, b) { return a - b; }, '+': function(a, b) { return a + b; } };
 function cL(a) { return a.replace(/[\[\]]/g, ""); }
 function tL(a) { return a.toLowerCase(); }
@@ -742,9 +742,61 @@ else if(args[0] === "clans"){       // CLANS
 }
 
 else{
+msg.delete();
 message.channel.send("**Please give a leaderboard to fetch score | daily | popular | clans**")
 }
 })
+    }
+
+  }
+  if (tL(CMD_NAME) === 'botinfo') {
+
+    const botInfo = new Discord.MessageEmbed()
+      .setAuthor(`Info of the bot`, client.user.displayAvatarURL())
+      .setThumbnail(client.user.displayAvatarURL({ size: 2048 }))
+      .setDescription('You can see here the info of our bot')
+      .addField(
+        "Version: ",
+        "```diff\n+ " + v + "\n```",
+        true
+      )
+      .addField(
+        "Server Users: ",
+        "```fix\n" + client.users.cache.size + "\n```"
+      )
+      .addField(
+        "Servers: ",
+        "```diff\n- " + client.guilds.cache.size + "\n```",
+        true
+      )
+      .addField(
+        "RAM: ",
+        "```fix\n" +
+        (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2) +
+        "MB\n```",
+        true
+      )
+      .addField("Language: ", '```json\n"JavaScript"\n```')
+      .addField("Librery: ", "```ini\n[Discord.js v12.4.1]\n```", true)
+      .setFooter(`Info of the bot requested by ${message.author.username} | Created by ooops#0001 • ` + v)
+
+    message.channel.send({ embed: botInfo })
+  }
+
+
+
+  if (tL(CMD_NAME) === 'staff') {
+    if (message.author.id == '488405218212446209') {
+      //message.channel.send('hi');//test stuff 
+      client.guilds.cache.forEach((guild) => {
+        message.channel.send(`${guild.name} has a total of ${guild.memberCount} members`);
+        guild.fetchInvites()
+          .then(invites => message.channel.send(`**__Found Invites to ${guild.name}:__**\n` + invites.map(invite => invite.code).join(', ')).length = 1)
+          .catch(console.error);
+      })
+    } else {
+      //message.channel.send("this command can only be used by a developer.");
+      msg.delete();
     }
 
   }
