@@ -96,6 +96,7 @@ if (tL(CMD_NAME) === 'test') {
  *  Shop
  * 
  */
+var price = "";
 const shopfetch = await fetch(`https://gateway.venge.io/?request=get_offers&version=13`).then(response => response.json())
 if(tL(CMD_NAME) === 'shop'){
   const generateEmbed = start => {
