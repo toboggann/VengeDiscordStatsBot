@@ -96,7 +96,6 @@ if (tL(CMD_NAME) === 'test') {
  *  Shop
  * 
  */
-var price = "";
 const shopfetch = await fetch(`https://gateway.venge.io/?request=get_offers&version=13`).then(response => response.json())
 if(tL(CMD_NAME) === 'shop'){
   const generateEmbed = start => {
@@ -107,11 +106,12 @@ if(tL(CMD_NAME) === 'shop'){
 
 
     for (i = start; i <= start; i++) {
-        leaderboardEmbed.addFields({name: shopfetch.items[i].name, value: `Price: ` + price + "\n Rarity: " + shopfetch.items[i].rarity + "\n Type: " + shopfetch.items[i].class})
+        
         if(shopfetch.items[i].id == "94"){
         shipimage = "https://cdn.discordapp.com/attachments/426798993419534379/787225402200293376/unknown.png";
         price = "ONLY IN CRATES";
-    }   else if(shopfetch.items[i].id == "94"){
+
+    }   else if(shopfetch.items[i].id == "93"){
         shipimage = "https://cdn.discordapp.com/attachments/426798993419534379/787225657661849600/unknown.png";
         price = shopfetch.items[i].price;
       }
@@ -119,6 +119,7 @@ if(tL(CMD_NAME) === 'shop'){
         shipimage = "https://cdn.discordapp.com/attachments/426798993419534379/787226201180733450/unknown.png";
         price = "ONLY IN CRATES";
         }
+        leaderboardEmbed.addFields({name: shopfetch.items[i].name, value: `Price: ` + price + "\n Rarity: " + shopfetch.items[i].rarity + "\n Type: " + shopfetch.items[i].class})
         leaderboardEmbed.setImage(shipimage)
       }
 
@@ -737,7 +738,6 @@ message.channel.send("**Please give a leaderboard to fetch score | daily | popul
 })
     }
 
-  }
   if (tL(CMD_NAME) === 'botinfo') {
 
     const botInfo = new Discord.MessageEmbed()
@@ -789,6 +789,8 @@ message.channel.send("**Please give a leaderboard to fetch score | daily | popul
     }
 
   }
+}
 });
 //
 client.login(process.env.token);
+//client.login('NzgyNDA1NzY0Mjk1MTYzOTA2.X8LuJg.-K0Z97NDM-Z20ED5eOfh4oLnyYA');
