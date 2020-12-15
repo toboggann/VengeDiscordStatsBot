@@ -464,7 +464,7 @@ if(tL(CMD_NAME) === 'stats'){
       levels.fillStyle = '#FFFFFF';
       levels.font = '140px MAKISUPA';
       levels.fillText(details.level, 128, 128);
-      const vengelevels = new Discord.MessageAttachment(canvas.toBuffer(), 'levels.png');
+      const vengelevels = new Discord.MessageAttachment(shiz.toBuffer(), 'levels.png');
 
       const test = new Discord.MessageAttachment(canvas.toBuffer(), 'example.png');
 
@@ -472,6 +472,7 @@ if(tL(CMD_NAME) === 'stats'){
           .setTitle(person)
           .setColor("2F3136")
           .setFooter(foot, client.user.avatarURL())
+          .setTimestamp()
           .setThumbnail(vengelevels)
           .setDescription(`[Venge Profile](https://social.venge.io/#${details.username_raw})\n[${clanshit}](${clanlink})`)
           .addFields(      
