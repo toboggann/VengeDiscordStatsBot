@@ -253,6 +253,11 @@ if(tL(CMD_NAME) === 'stats'){
       var clancolor = '#FFFFFF';
       var barcolor = '#237FFF';
 
+      const shiz = Canvas.createCanvas(256, 256);
+      const levels = shiz.getContext('2d');
+      levels.textAlign = "center";
+      var backlevel = await Canvas.loadImage('https://cdn.discordapp.com/attachments/784981093983060041/788444472559009822/bluelevel.png');
+      levels.drawImage(backlevel, 0 , 0, canvas.width, canvas.height);
 
 
       if(details.clan === '/2FLY'){
@@ -454,10 +459,7 @@ if(tL(CMD_NAME) === 'stats'){
     	const avatar = await Canvas.loadImage(client.user.displayAvatarURL({ format: 'png' })); 
       ctx.drawImage(avatar, 3495, 2270, 300, 300);
       
-      const shiz = Canvas.createCanvas(256, 256);
-      const levels = shiz.getContext('2d');
-      levels.textAlign = "center";
-      var backlevel = await Canvas.loadImage('https://cdn.discordapp.com/attachments/784981093983060041/788444472559009822/bluelevel.png');
+     
       levels.fillStyle = '#FFFFFF';
       levels.font = '140px MAKISUPA';
       levels.fillText(details.level, 128, 128);
