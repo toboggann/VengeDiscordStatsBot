@@ -454,8 +454,13 @@ if(tL(CMD_NAME) === 'stats'){
     	const avatar = await Canvas.loadImage(client.user.displayAvatarURL({ format: 'png' })); 
       ctx.drawImage(avatar, 3495, 2270, 300, 300);
       
-
-      
+      const shiz = Canvas.createCanvas(256, 256);
+      const levels = canvas.getContext('2d');
+      levels.textAlign = "center";
+      var backlevel = await Canvas.loadImage('https://cdn.discordapp.com/attachments/784981093983060041/788444472559009822/bluelevel.png');
+      levels.fillStyle = '#FFFFFF';
+      levels.font = '140px MAKISUPA';
+      levels.fillText(details.level, 128, 128);
 
       const test = new Discord.MessageAttachment(canvas.toBuffer(), 'example.png');
 
@@ -463,7 +468,7 @@ if(tL(CMD_NAME) === 'stats'){
           .setTitle(person)
           .setColor("2F3136")
           .setFooter(foot, client.user.avatarURL())
-          .setTimestamp()
+          .setTimestamp(levels)
           .setThumbnail("https://social.venge.io/images/logo.png")
           .setDescription(`[Venge Profile](https://social.venge.io/#${details.username_raw})\n[${clanshit}](${clanlink})`)
           .addFields(      
