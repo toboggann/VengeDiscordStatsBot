@@ -455,7 +455,7 @@ if(tL(CMD_NAME) === 'stats'){
       ctx.drawImage(avatar, 3495, 2270, 300, 300);
       
       const shiz = Canvas.createCanvas(256, 256);
-      const levels = canvas.getContext('2d');
+      const levels = shiz.getContext('2d');
       levels.textAlign = "center";
       var backlevel = await Canvas.loadImage('https://cdn.discordapp.com/attachments/784981093983060041/788444472559009822/bluelevel.png');
       levels.fillStyle = '#FFFFFF';
