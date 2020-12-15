@@ -468,8 +468,7 @@ if(tL(CMD_NAME) === 'stats'){
           .setTitle(person)
           .setColor("2F3136")
           .setFooter(foot, client.user.avatarURL())
-          .setTimestamp(levels)
-          .setThumbnail("https://social.venge.io/images/logo.png")
+          .setThumbnail(levels)
           .setDescription(`[Venge Profile](https://social.venge.io/#${details.username_raw})\n[${clanshit}](${clanlink})`)
           .addFields(      
             {
