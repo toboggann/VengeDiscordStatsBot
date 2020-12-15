@@ -253,6 +253,7 @@ if(tL(CMD_NAME) === 'stats'){
       var clancolor = '#FFFFFF';
       var barcolor = '#237FFF';
 
+      //LEVEL
       const shiz = Canvas.createCanvas(256, 256);
       const levels = shiz.getContext('2d');
       levels.textAlign = "center";
@@ -331,7 +332,7 @@ if(tL(CMD_NAME) === 'stats'){
 
      //everything else ///////////////////////////////////////////////////////////////
 
-      ctx.fillStyle = clanslgg;
+     /* ctx.fillStyle = clanslgg;
       ctx.fillText(`${verfied_} ${clan} ${details.username_raw}`, canvas.width / 4.1, canvas.height / 7.6);
       ctx.beginPath();
       ctx.fillStyle = barcolor;
@@ -458,11 +459,12 @@ if(tL(CMD_NAME) === 'stats'){
 
     	const avatar = await Canvas.loadImage(client.user.displayAvatarURL({ format: 'png' })); 
       ctx.drawImage(avatar, 3495, 2270, 300, 300);
-      
+      */
      
       levels.fillStyle = '#FFFFFF';
       levels.font = '140px MAKISUPA';
       levels.fillText(details.level, 128, 128);
+      const vengelevels = new Discord.MessageAttachment(canvas.toBuffer(), 'levels.png');
 
       const test = new Discord.MessageAttachment(canvas.toBuffer(), 'example.png');
 
@@ -470,7 +472,7 @@ if(tL(CMD_NAME) === 'stats'){
           .setTitle(person)
           .setColor("2F3136")
           .setFooter(foot, client.user.avatarURL())
-          .setThumbnail(levels)
+          .setThumbnail(vengelevels)
           .setDescription(`[Venge Profile](https://social.venge.io/#${details.username_raw})\n[${clanshit}](${clanlink})`)
           .addFields(      
             {
