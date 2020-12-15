@@ -473,7 +473,7 @@ if(tL(CMD_NAME) === 'stats'){
           .setColor("2F3136")
           .setFooter(foot, client.user.avatarURL())
           .setTimestamp()
-          .setThumbnail(vengelevels)
+          //.setThumbnail()
           .setDescription(`[Venge Profile](https://social.venge.io/#${details.username_raw})\n[${clanshit}](${clanlink})`)
           .addFields(      
             {
@@ -515,6 +515,7 @@ if(tL(CMD_NAME) === 'stats'){
           
           msg.delete()
           message.channel.send(vengg);
+          message.channel.send(vengelevels);
           //message.channel.send(test);
       });
   })
