@@ -82,9 +82,6 @@ if (tL(CMD_NAME) === 'link') {
 .setColor(0x2F3136)
 message.channel.send({ embed: helpchannel });
 message.author.send('What is your venge.io username?');
-if (message.channel.type == 'dm') {
-  message.reply(`${args[0]}`);
-}
 }
 
 /***
