@@ -73,6 +73,20 @@ message.channel.send({ embed: helpchannel });
 
 /***
  * 
+ *  Link account
+ * 
+ */
+if (tL(CMD_NAME) === 'link') {
+  message.author.send("**__OOOPS Stats Bot invite:__**\nhttps://discord.com/api/oauth2/authorize?client_id=782405764295163906&permissions=8&scope=bot");
+  const helpchannel = new Discord.MessageEmbed()
+.setTitle(":e_mail:  You've Recieved Mail")
+.setColor(0x2F3136)
+message.channel.send({ embed: helpchannel });
+message.author.send('What is your venge.io username?');
+}
+
+/***
+ * 
  *  test canvas
  * 
  */
