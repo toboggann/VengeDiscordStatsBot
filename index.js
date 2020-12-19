@@ -83,7 +83,11 @@ if (message.channel.type === "dm") {
                       return message.channel.send({ embed : load})
                       }
                       var coinsbefore = details.coins;
-                      message.channel.send("To prove you are who you say you are Please open up one T1 crate (200 VG)", {files: ["./Tier1create.png"]});
+                      const helpchannel = new Discord.MessageEmbed()
+                      .setTitle("To prove you are who you say you are Please open up one T1 crate (200 VG)")
+                      .setImage('https://cdn.discordapp.com/attachments/426798993419534379/789662915228860436/unknown.png')
+                      .setColor(0x2F3136)
+                      message.channel.send({ embed: helpchannel });
                       message.channel.send("**VLINK IS STILL BEING SET UP\nIF YOU SPEND ANY VG ooops#0001 IS NOT RESPONSIBLE FOR YOU LOSING VG SO DON\'T GO CRYING TO HIM ABOUT IT BECUASE HE WILL IGNORE YOU**");
 
                     });
@@ -182,7 +186,7 @@ if (tL(CMD_NAME) === 'test') {
  *  Shop
  * 
  */
-const shopfetch = await fetch(`https://gateway.venge.io/?request=get_offers&version=13`).then(response => response.json())
+const shopfetch = await fetch(`https://gateway.venge.io/?request=get_offers&version=15`).then(response => response.json())
 if(tL(CMD_NAME) === 'shop'){
   const generateEmbed = start => {
     const leaderboardEmbed = new Discord.MessageEmbed()
@@ -193,16 +197,16 @@ if(tL(CMD_NAME) === 'shop'){
 
     for (i = start; i <= start; i++) {
         
-        if(shopfetch.items[i].id == "94"){
-        shipimage = "https://cdn.discordapp.com/attachments/426798993419534379/787225402200293376/unknown.png";
+        if(shopfetch.items[i].id == "109"){
+        shipimage = "https://cdn.discordapp.com/attachments/426798993419534379/789676935877623859/unknown.png";
         price = "ONLY IN CRATES";
 
-    }   else if(shopfetch.items[i].id == "93"){
-        shipimage = "https://cdn.discordapp.com/attachments/426798993419534379/787225657661849600/unknown.png";
+    }   else if(shopfetch.items[i].id == "103"){
+        shipimage = "https://cdn.discordapp.com/attachments/426798993419534379/789677035916230696/unknown.png";
         price = shopfetch.items[i].price;
       }
         else {
-        shipimage = "https://cdn.discordapp.com/attachments/426798993419534379/787226201180733450/unknown.png";
+        shipimage = "https://cdn.discordapp.com/attachments/426798993419534379/789677177875857438/unknown.png";
         price = "ONLY IN CRATES";
         }
         leaderboardEmbed.addFields({name: shopfetch.items[i].name, value: `Price: ` + price + "\n Rarity: " + shopfetch.items[i].rarity + "\n Type: " + shopfetch.items[i].class})
