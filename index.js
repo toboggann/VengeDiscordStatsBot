@@ -20,7 +20,83 @@ client.on('ready', () => {
       }
     });
   });
+  client.on('message', async (message) => {
+    if (message.author.bot) return;
 
+    if (message.content.startsWith(PREFIX)) {
+        const [CMD_NAME, ...args] = message.content
+          .trim()
+          .substring(PREFIX.length)
+          .split(/\s+/);
+/***
+ * 
+ *  Link account
+ * 
+ */
+
+
+if (message.channel.type === "dm") {
+  console.log('dm works')
+  if(tL(CMD_NAME) === 'vlink'){
+    console.log('works')
+      let filter = m => m.author.id === message.author.id
+      message.channel.send(`What is your username?`).then(() => {
+        message.channel.awaitMessages(filter, {
+            max: 1,
+            time: 80000,
+            errors: ['time']
+          })
+          .then(message => {
+              
+              message = message.first()
+              //message.channel.send(message); //Change this to be whatever you want to do with the username
+                  
+                    async function getUserDetails(message) {
+                      const browser = await puppeteer.launch({
+                        args: [
+                          '--no-sandbox',
+                          '--disable-setuid-sandbox',
+                        ],
+                      });
+                    const page = await browser.newPage();
+                    const url = `https://social.venge.io/#${message}`;
+              
+                    await page.goto(url, { waitUntil: 'networkidle0' });
+                
+                    const handle = await page.evaluateHandle(() => app.details);
+                    const details = await handle.jsonValue();
+                
+                    await browser.close();
+                
+                    return details;
+                    }
+                
+                    getUserDetails(message)
+                    .then(async details => {
+                     
+                      console.log(message.author.tag + ' requested vlink of the account ' + details.username_raw);
+                    
+                      const load = new Discord.MessageEmbed()
+                      .setTitle(':x: Not enough account info')
+                      .setColor("2F3136")
+                      if(details.kills == 0){
+                      return message.channel.send({ embed : load})
+                      }
+                      var coinsbefore = details.coins;
+                      message.channel.send("To prove you are who you say you are Please open up one T1 crate (200 VG)", {files: ["./Tier1create.png"]});
+                      message.channel.send("**VLINK IS STILL BEING SET UP\nIF YOU SPEND ANY VG ooops#0001 IS NOT RESPONSIBLE FOR YOU LOSING VG SO DON\'T GO CRYING TO HIM ABOUT IT BECUASE HE WILL IGNORE YOU**");
+
+                    });
+              
+          })
+          .catch(collected => {
+              message.channel.send('Your vlink session ran out of time Please type \`vlink\` again to start a new');
+          });
+      })
+  }
+}
+    }
+  })
 client.on('message', async (message) => {
     if (message.author.bot) return;
     if (message.channel.type === 'dm') return;
@@ -31,6 +107,15 @@ client.on('message', async (message) => {
           .substring(PREFIX.length)
           .split(/\s+/);
 
+          if ((tL(CMD_NAME) === 'vlink')) {
+            console.log('vlink message works')
+              message.delete();
+              const helpchannel = new Discord.MessageEmbed()
+              .setTitle(":e_mail:  You've Recieved Mail")
+              .setColor(0x2F3136)
+              message.channel.send({ embed: helpchannel });
+            message.author.send(`dm \`.vlink\` here`);
+            }
 /***
  * 
  *  Help
@@ -71,18 +156,6 @@ if (tL(CMD_NAME) === 'invite') {
 message.channel.send({ embed: helpchannel });
 }
 
-/***
- * 
- *  Link account
- * 
- */
-if (tL(CMD_NAME) === 'link') {
-  const helpchannel = new Discord.MessageEmbed()
-.setTitle(":e_mail:  You've Recieved Mail")
-.setColor(0x2F3136)
-message.channel.send({ embed: helpchannel });
-message.author.send('What is your venge.io username?');
-}
 
 /***
  * 
@@ -199,7 +272,8 @@ if(tL(CMD_NAME) === 'stats'){
       getUserDetails(args[0])
       .then(async details => {
        
-        console.log(details.username_raw);
+        console.log(details.username_raw + ' was requested by ' + message.author.tag);
+
       
         const load = new Discord.MessageEmbed()
         .setTitle(':x: Not enough account info')
@@ -816,5 +890,5 @@ message.channel.send("**Please give a leaderboard to fetch score | daily | popul
 }
 });
 //
-client.login(process.env.token);
-//client.login('NzgyNDA1NzY0Mjk1MTYzOTA2.X8LuJg.-K0Z97NDM-Z20ED5eOfh4oLnyYA');
+//client.login(process.env.token);
+client.login('NzgyNDA1NzY0Mjk1MTYzOTA2.X8LuJg.-K0Z97NDM-Z20ED5eOfh4oLnyYA');
