@@ -6,7 +6,7 @@ const fetch = require("node-fetch");
 const foot = "Made by ooops#0001 and Izzibaby#5917";
 const Canvas = require('canvas');
 const fs = require('fs');
-client.msgs = require ("./msgs.json");
+client.msgs = require("./msgs.json");
 const v = "2.0.0";
 function iN(a) { return /^\d+$/.test(a); } function iO(a) { return a.match('^[/*+-]{1}$') == null ? !1 : !0; } mC = { '/': function (a, b) { return a / b; }, '*': function (a, b) { return a * b; }, '-': function (a, b) { return a - b; }, '+': function (a, b) { return a + b; } };
 function cL(a) { return a.replace(/[\[\]]/g, ""); }
@@ -30,6 +30,20 @@ client.on('message', async (message) => {
       .trim()
       .substring(PREFIX.length)
       .split(/\s+/);
+
+      /*if (tL(CMD_NAME) === 'write') {
+        editedmessage = message.content.slice(7);
+
+        client.msgs[message.author.id] = {
+          message: editedmessage
+        }
+        console.log(client.msgs)
+
+        fs.writeFile("./msgs.json", JSON.stringify(client.msgs, null, 4), err => {
+          if (err) throw err;
+          message.channel.send("Venge account linked!");
+        });
+      }
     /***
      * 
      *  Link account
@@ -102,7 +116,7 @@ client.on('message', async (message) => {
                       .then(message => {
                         message = message.first()
 
-                        if (message.content.startsWith(tL("DONE"))) {
+                        if (message.content.startsWith("DONE")) {
                           message.channel.send("Searching account.");
 
                           getUserDetails(username)
@@ -111,19 +125,23 @@ client.on('message', async (message) => {
 
                               if (coinsAfter == (coinsbefore - 200)) {
                                 message.channel.send("Verified");
-                                client.msgs [message.author.id] = {
-                                  message: message
+                                console.log("DONE")
+                                client.msgs[message.author.id] = {
+                                  message: details.username_raw,
+                                  discord: message.author.tag
                                 }
-                                fs.writeFile ("./msgs.json", JSON.stringify (client.msgs, null, 4)), err => {
+                                console.log(client.msgs)
+
+                                fs.writeFile("./msgs.json", JSON.stringify(client.msgs, null, 4), err => {
                                   if (err) throw err;
                                   message.channel.send("Venge account linked!");
-                                }
+                                });
                               } else if (coinsAfter == coinsbefore) {
                                 message.channel.send("VG didn't change, setup unsuccessful.");
                               }
                             })
                         }
-                      })            .catch(collected => {
+                      }).catch(collected => {
                         console.log(collected);
                         message.channel.send('I\'m Sorry but your VG did not change either try again or try your own account');
                       });
@@ -281,379 +299,379 @@ client.on('message', async (message) => {
     *  Venge stats
     * 
     */
-    if (tL(CMD_NAME) === 'stats') {
-      const load = new Discord.MessageEmbed()
-        .setTitle('<a:loading:783003234481602572> Searching for user')
-        .setColor("2F3136")
-      message.channel.send({ embed: load })
-        .then(msg => {
+   if (tL(CMD_NAME) === 'stats') {
+    const load = new Discord.MessageEmbed()
+      .setTitle('<a:loading:783003234481602572> Searching for user')
+      .setColor("2F3136")
+    message.channel.send({ embed: load })
+      .then(msg => {
 
-          const none = new Discord.MessageEmbed()
-            .setTitle(":x: Please enter a valid venge user")
-            .setColor("2F3136")
-          if (!args[0]) return message.channel.send({ embed: none })
-          async function getUserDetails(username) {
-            const browser = await puppeteer.launch({
-              args: [
-                '--no-sandbox',
-                '--disable-setuid-sandbox',
-              ],
-            });
-            const page = await browser.newPage();
-            const url = `https://social.venge.io/#${username}`;
+        const none = new Discord.MessageEmbed()
+          .setTitle(":x: Please enter a valid venge user")
+          .setColor("2F3136")
+        if (!args[0]) return message.channel.send({ embed: none })
+        async function getUserDetails(username) {
+          const browser = await puppeteer.launch({
+            args: [
+              '--no-sandbox',
+              '--disable-setuid-sandbox',
+            ],
+          });
+          const page = await browser.newPage();
+          const url = `https://social.venge.io/#${username}`;
 
-            await page.goto(url, { waitUntil: 'networkidle0' });
+          await page.goto(url, { waitUntil: 'networkidle0' });
 
-            const handle = await page.evaluateHandle(() => app.details);
-            const details = await handle.jsonValue();
+          const handle = await page.evaluateHandle(() => app.details);
+          const details = await handle.jsonValue();
 
-            await browser.close();
+          await browser.close();
 
-            return details;
-          }
+          return details;
+        }
 
-          getUserDetails(args[0])
-            .then(async details => {
+        getUserDetails(args[0])
+          .then(async details => {
 
-              console.log(details.username_raw + ' was requested by ' + message.author.tag);
-
-
-              const load = new Discord.MessageEmbed()
-                .setTitle(':x: Not enough account info')
-                .setColor("2F3136")
-              if (details.kills == 0) {
-                msg.delete()
-                return message.channel.send({ embed: load })
-              }
-              poop = details.username_raw;
-              if (details.verified == 1) {
-                verified = "<:verified:771943589894291467>";
-              } else {
-                verified = "";
-              }
-              if (details.clan == false)
-                person = verified + details.username_raw;
-              else
-                person = verified + " [" + details.clan + "] " + details.username_raw;
-
-              if (details.clan_social_link == false)
-                clanlink = "";
-              else
-                clanlink = details.clan_social_link;
-
-              if (details.clan_social_link === 'https://')
-                clanshit = "";
-              else
-                clanshit = details.clan + " Discord";
-
-              if (details.last_match_position == "1")
-                placeshiz = "st";
-              else if (details.last_match_position == "2")
-                placeshiz = "nd";
-              else if (details.last_match_position == "3")
-                placeshiz = "rd";
-              else
-                placeshiz = "th";
-
-              if (details.verified === 1) {
-                verfied_ = "✔️";
-              }
-              else {
-                verfied_ = "";
-              }
-              if (details.clan == false) {
-                clan = "";
-                clanslgg = "#FFFFFF";
-              }
-              else
-                clan = " [" + details.clan + "]";
+            console.log(details.username_raw + ' was requested by ' + message.author.tag);
 
 
-              var kps = details.kills / details.total_games_played;
-              kpg = kps.toString();
-              kpg = kpg.slice(0, 5);
-              var WLS = details.total_games_won / details.total_games_played;
-              WLR = WLS.toString();
-              WLR = WLR.slice(0, 4);
-              var headper = details.headshots / details.kills * 100;
-              headper1 = headper.toString();
-              headper1 = headper1.slice(0, 5);
-              Canvas.registerFont('./fonts/MAKISUPA.TTF', { family: "Makisupa" });
-              const canvas = Canvas.createCanvas(3820, 2580);
-              const ctx = canvas.getContext('2d');
-              ctx.textAlign = "center";
-              var background = await Canvas.loadImage('./Background.jpg');
-              var clancolor = '#FFFFFF';
-              var barcolor = '#237FFF';
-
-              //LEVEL
-              const shiz = Canvas.createCanvas(256, 256);
-              const levels = shiz.getContext('2d');
-              levels.textAlign = "center";
-              var backlevel = await Canvas.loadImage('https://cdn.discordapp.com/attachments/784981093983060041/788444472559009822/bluelevel.png');
-              levels.drawImage(backlevel, 0, 0, canvas.width, canvas.height);
-
-
-              if (details.clan === '/2FLY') {
-                clancolor = '#ffffff';
-                background = await Canvas.loadImage('./2fly.jpg');
-                clancolor = '#1326a1';
-                barcolor = '#a86814';
-              }
-              else if (details.clan === '/KAG') {
-                background = await Canvas.loadImage('./KAGSomething.jpg');
-                clancolor = '#ff0000';
-                barcolor = '#a86814';
-              }
-              else if (details.clan === '/ERA') {
-                background = await Canvas.loadImage('https://cdn.discordapp.com/attachments/764738896063496222/764738983547764756/era_logo_with_outer_glow.png');
-                clancolor = '#ff0000';
-                barcolor = '#a86814';
-              }
-
-
-              clanslgg = details.username.slice(10, 17);
-              //console.log(clanslgg)
-              ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-
-              if (details.clan == false) {
-                clan = "";
-                clanslgg = "#FFFFFF";
-              }
-              else
-                clan = " [" + details.clan + "]";
-              ctx.font = '190px MAKISUPA';
-
-              /*
-                      //squares
-                    
-                   ctx.beginPath();
-                   ctx.fillStyle = "#ffffff";
-                   ctx.fillRect(170, 640, 812, canvas.height / 7.5);
-                   ctx.stroke();
-              
-              
-                   ctx.beginPath();
-                   ctx.fillStyle = "#9c27b0";
-                   ctx.fillRect(190, 670, 790, canvas.height / 7.95);
-                   ctx.stroke();
-              
-                   
-                   ctx.beginPath();
-                   ctx.fillStyle = "#9c27b0";
-                   ctx.fillRect(1715, 655, 510, canvas.height / 9.15);
-                   ctx.stroke();
-              
-                   ctx.beginPath();
-                   ctx.fillStyle = "#ffffff";
-                   ctx.fillRect(1700, 880, 542, canvas.height / 7.5);
-                   ctx.stroke();
-              
-                   ctx.beginPath();
-                   ctx.fillStyle = "#ffffff";
-                   ctx.fillRect(1700, 1120, 542, canvas.height / 7.5);
-                   ctx.stroke();
-              
-                   ctx.beginPath();
-                   ctx.fillStyle = "#9c27b0";
-                   ctx.fillRect(1715, 895, 510, canvas.height / 9.15);
-                   ctx.stroke();
-                        ctx.beginPath();
-                   ctx.fillStyle = "#9c27b0";
-                   ctx.fillRect(1715, 1135, 510, canvas.height / 9.15);
-                   ctx.stroke();*/
-
-              //everything else ///////////////////////////////////////////////////////////////
-
-              /* ctx.fillStyle = clanslgg;
-               ctx.fillText(`${verfied_} ${clan} ${details.username_raw}`, canvas.width / 4.1, canvas.height / 7.6);
-               ctx.beginPath();
-               ctx.fillStyle = barcolor;
-               ctx.fillRect(canvas.width/8, canvas.height/6, 2950, 150);
-               ctx.fillStyle = '#2A4385';
-         
-               ctx.fillRect(canvas.width/7.6, canvas.height/5.8, 2900 * details.experience_bar, 120);
-               ctx.fillStyle = '#FFFFFF';
-               ctx.font = '100px MAKISUPA';
-               ctx.fillText(details.experience + " / " + details.experience_next, canvas.width / 2.01, canvas.height / 4.8);
-               //console.log(details.experience_bar)
-               //console.log(details.experience + " / " + details.experience_next) 
-               ctx.stroke();
-               ctx.closePath();
-               ctx.fillStyle = clancolor;
-               ctx.font = '170px MAKISUPA';
-               ctx.fillText(details.level, canvas.width / 14, canvas.height / 4.586);
-               //ctx.fillText(`___________`, canvas.width / 24, canvas.height / 4.2);
-         
-               ctx.textAlign = "center";
-         
-               ctx.font = '110px MAKISUPA';
-               ctx.fillText("Followers", canvas.width/1.20819571865, 280);
-               ctx.textAlign = "right";
-               ctx.fillStyle = '#FFFFFF';
-               ctx.fillText(details.followers, canvas.width/1.33101045296, 280);
-               ctx.textAlign = "center";
-         
-               ctx.font = '110px MAKISUPA';
-               ctx.fillStyle = clancolor;
-               ctx.fillText("VG", canvas.width/1.1394137931, 400);
-               ctx.textAlign = "right";
-               ctx.fillStyle = '#FFFFFF';
-               ctx.fillText(details.coins, canvas.width/1.17419571865, 400);
-               ctx.fillStyle = clancolor;
-               ctx.fillText("Following: ", 2570 , 2420);
-               ctx.fillStyle = '#FFFFFF';
-               ctx.fillText(details.following, 3170 , 2420);
-               ctx.fillStyle = clancolor;
-               ctx.fillText("Game Time: ", canvas.width / 24 , 2420);
-               ctx.fillStyle = '#FFFFFF';
-               ctx.fillText(details.total_game_time, 750 , 2420);
-         
-               // main body
-         
-               //KILLS
-               ctx.font = '70px MAKISUPA';
-               ctx.fillStyle = clancolor;
-               ctx.fillText("Kills", canvas.width / 5.74 , 920);
-               ctx.fillStyle = '#FFFFFF';
-               ctx.font = '140px MAKISUPA';
-               ctx.fillText(details.kills, canvas.width / 5, 820);
-         
-               //games played
-               ctx.font = '70px MAKISUPA';
-               ctx.fillStyle = clancolor;
-               ctx.fillText("Played", canvas.width / 23 , 1300);
-               ctx.fillStyle = '#FFFFFF';
-               ctx.font = '140px MAKISUPA';
-               ctx.fillText(details.total_games_played, canvas.width / 15, 1450);
-         
-               //Deaths
-               ctx.font = '70 MAKISUPA';
-               ctx.fillStyle = clancolor;
-               ctx.fillText("Deaths", canvas.width / 3.53 , 1300);
-               ctx.fillStyle = '#FFFFFF';
-               ctx.font = '140px MAKISUPA';
-               ctx.fillText(details.deaths, canvas.width / 3.28, 1450);
-               
-               //Wins
-               ctx.font = '70px MAKISUPA';
-               ctx.fillStyle = clancolor;
-               ctx.fillText("Wins", canvas.width / 3.25, 1700);
-               ctx.fillStyle = '#FFFFFF';
-               ctx.font = '140px MAKISUPA';
-               ctx.fillText(details.total_games_won, canvas.width / 3.2, 1850);
-               
-               //KDR
-               ctx.font = '70px MAKISUPA';
-               ctx.fillStyle = clancolor;
-               ctx.fillText("KDR", canvas.width / 2, 920);
-               ctx.fillStyle = '#FFFFFF';
-               ctx.font = '140px MAKISUPA';
-               ctx.fillText(details.kdr, canvas.width / 1.9, 820);
-         
-               //TOTAL LOSSES
-               ctx.font = '70px MAKISUPA';
-               ctx.fillStyle = clancolor;
-               ctx.fillText("Losses", canvas.width /1.87, 1300);
-               ctx.fillStyle = '#FFFFFF';
-               ctx.font = '140px MAKISUPA';
-               ctx.fillText(details.total_games_played - details.total_games_won, canvas.width / 1.732, 1450);
-                     
-               //KPG
-               ctx.font = '170px MAKISUPA';
-               ctx.fillStyle = clancolor;
-               ctx.fillText("KPG", canvas.width / 1.3, 900);
-               ctx.fillStyle = '#FFFFFF';
-               ctx.font = '140px MAKISUPA';
-               ctx.fillText(kpg, canvas.width / 1.31, 1050);
-         
-               //KPG
-               ctx.font = '170px MAKISUPA';
-               ctx.fillStyle = clancolor;
-               ctx.fillText("W/L", canvas.width / 1.3, 1300);
-               ctx.fillStyle = '#FFFFFF';
-               ctx.font = '140px MAKISUPA';
-               ctx.fillText(WLR, canvas.width / 1.285, 1450);
-         
-         
-         
-         
-               //beaned players
-               const bannedPlayers = ['NeXi2k', 'cringe', 'aimer'];
-         
-               if(bannedPlayers.includes(details.username_raw)){
-                 ctx.fillStyle = '#2A4385';
-                 ctx.font = '900px MAKISUPA';
-                 ctx.rotate(0.2)
-                 ctx.fillStyle = '#FF0000';
-                 ctx.fillText('BEANED', 2150, 1300)
-                 console.log("BEANED MAN")
-               }
-         
-               const avatar = await Canvas.loadImage(client.user.displayAvatarURL({ format: 'png' })); 
-               ctx.drawImage(avatar, 3495, 2270, 300, 300);
-               */
-
-              levels.fillStyle = '#FFFFFF';
-              levels.font = '140px MAKISUPA';
-              levels.fillText(details.level, 128, 128);
-              const vengelevels = new Discord.MessageAttachment(shiz.toBuffer(), 'levels.png');
-
-              const test = new Discord.MessageAttachment(canvas.toBuffer(), 'example.png');
-
-              const vengg = new Discord.MessageEmbed()
-                .setTitle(person)
-                .setColor("2F3136")
-                .setFooter(foot, client.user.avatarURL())
-                .setTimestamp()
-                .attachFiles(vengelevels)
-                .setThumbnail("attachment://levels.png")
-                //.setThumbnail()
-                .setDescription(`[Venge Profile](https://social.venge.io/#${details.username_raw})\n[${clanshit}](${clanlink})`)
-                .addFields(
-                  {
-                    name: "__Account Stats__",
-                    value: `Experience: ` + details.experience
-                      + "\nFollowers: " + details.followers
-                      + "\nFollowing: " + details.following
-                      + `\nVG Coins: ` + details.coins,
-                    inline: true
-
-                  },
-                  {
-                    name: "__Player Stats__",
-                    value: `Kills: ` + details.kills
-                      + `\nDeaths: ` + details.deaths
-                      + `\nKDR: ` + details.kdr
-                      + "\nKPG: " + kpg
-                      + `\nHeadshots: ` + details.headshots + " (" + headper1 + "%)",
-                    inline: true
-
-                  },
-                  {
-                    name: "__Total Game Stats__",
-                    value: `Games Played: ` + details.total_games_played
-                      + `\nGames Won: ` + details.total_games_won
-                      + `\nW/L: ` + WLR
-                      + "\nTime: " + details.total_game_time,
-                  },
-                  {
-                    name: "__Last Match Stats__",
-                    value: `Last Match Kills: ` + details.last_match_kills
-                      + `\nLast Match Headshots: ` + details.last_match_headshots
-                      + `\nLast Match Time: ` + details.last_match_time
-                      + "\nLast Match Place: " + details.last_match_position + placeshiz,
-                    inline: true
-                  },
-
-                )
-
+            const load = new Discord.MessageEmbed()
+              .setTitle(':x: Not enough account info')
+              .setColor("2F3136")
+            if (details.kills == 0) {
               msg.delete()
-              message.channel.send(vengg);
-              //message.channel.send(test);
-            });
-        })
-    }
+              return message.channel.send({ embed: load })
+            }
+            poop = details.username_raw;
+            if (details.verified == 1) {
+              verified = "<:verified:771943589894291467>";
+            } else {
+              verified = "";
+            }
+            if (details.clan == false)
+              person = verified + details.username_raw;
+            else
+              person = verified + " [" + details.clan + "] " + details.username_raw;
+
+            if (details.clan_social_link == false)
+              clanlink = "";
+            else
+              clanlink = details.clan_social_link;
+
+            if (details.clan_social_link === 'https://')
+              clanshit = "";
+            else
+              clanshit = details.clan + " Discord";
+
+            if (details.last_match_position == "1")
+              placeshiz = "st";
+            else if (details.last_match_position == "2")
+              placeshiz = "nd";
+            else if (details.last_match_position == "3")
+              placeshiz = "rd";
+            else
+              placeshiz = "th";
+
+            if (details.verified === 1) {
+              verfied_ = "✔️";
+            }
+            else {
+              verfied_ = "";
+            }
+            if (details.clan == false) {
+              clan = "";
+              clanslgg = "#FFFFFF";
+            }
+            else
+              clan = " [" + details.clan + "]";
+
+
+            var kps = details.kills / details.total_games_played;
+            kpg = kps.toString();
+            kpg = kpg.slice(0, 5);
+            var WLS = details.total_games_won / details.total_games_played;
+            WLR = WLS.toString();
+            WLR = WLR.slice(0, 4);
+            var headper = details.headshots / details.kills * 100;
+            headper1 = headper.toString();
+            headper1 = headper1.slice(0, 5);
+            Canvas.registerFont('./fonts/MAKISUPA.TTF', { family: "Makisupa" });
+            const canvas = Canvas.createCanvas(3820, 2580);
+            const ctx = canvas.getContext('2d');
+            ctx.textAlign = "center";
+            var background = await Canvas.loadImage('./Background.jpg');
+            var clancolor = '#FFFFFF';
+            var barcolor = '#237FFF';
+
+            //LEVEL
+            const shiz = Canvas.createCanvas(256, 256);
+            const levels = shiz.getContext('2d');
+            levels.textAlign = "center";
+            var backlevel = await Canvas.loadImage('https://cdn.discordapp.com/attachments/784981093983060041/788444472559009822/bluelevel.png');
+            levels.drawImage(backlevel, 0, 0, canvas.width, canvas.height);
+
+
+            if (details.clan === '/2FLY') {
+              clancolor = '#ffffff';
+              background = await Canvas.loadImage('./2fly.jpg');
+              clancolor = '#1326a1';
+              barcolor = '#a86814';
+            }
+            else if (details.clan === '/KAG') {
+              background = await Canvas.loadImage('./KAGSomething.jpg');
+              clancolor = '#ff0000';
+              barcolor = '#a86814';
+            }
+            else if (details.clan === '/ERA') {
+              background = await Canvas.loadImage('https://cdn.discordapp.com/attachments/764738896063496222/764738983547764756/era_logo_with_outer_glow.png');
+              clancolor = '#ff0000';
+              barcolor = '#a86814';
+            }
+
+
+            clanslgg = details.username.slice(10, 17);
+            //console.log(clanslgg)
+            ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+
+            if (details.clan == false) {
+              clan = "";
+              clanslgg = "#FFFFFF";
+            }
+            else
+              clan = " [" + details.clan + "]";
+            ctx.font = '190px MAKISUPA';
+
+            /*
+                    //squares
+                  
+                 ctx.beginPath();
+                 ctx.fillStyle = "#ffffff";
+                 ctx.fillRect(170, 640, 812, canvas.height / 7.5);
+                 ctx.stroke();
+            
+            
+                 ctx.beginPath();
+                 ctx.fillStyle = "#9c27b0";
+                 ctx.fillRect(190, 670, 790, canvas.height / 7.95);
+                 ctx.stroke();
+            
+                 
+                 ctx.beginPath();
+                 ctx.fillStyle = "#9c27b0";
+                 ctx.fillRect(1715, 655, 510, canvas.height / 9.15);
+                 ctx.stroke();
+            
+                 ctx.beginPath();
+                 ctx.fillStyle = "#ffffff";
+                 ctx.fillRect(1700, 880, 542, canvas.height / 7.5);
+                 ctx.stroke();
+            
+                 ctx.beginPath();
+                 ctx.fillStyle = "#ffffff";
+                 ctx.fillRect(1700, 1120, 542, canvas.height / 7.5);
+                 ctx.stroke();
+            
+                 ctx.beginPath();
+                 ctx.fillStyle = "#9c27b0";
+                 ctx.fillRect(1715, 895, 510, canvas.height / 9.15);
+                 ctx.stroke();
+                      ctx.beginPath();
+                 ctx.fillStyle = "#9c27b0";
+                 ctx.fillRect(1715, 1135, 510, canvas.height / 9.15);
+                 ctx.stroke();*/
+
+            //everything else ///////////////////////////////////////////////////////////////
+
+            /* ctx.fillStyle = clanslgg;
+             ctx.fillText(`${verfied_} ${clan} ${details.username_raw}`, canvas.width / 4.1, canvas.height / 7.6);
+             ctx.beginPath();
+             ctx.fillStyle = barcolor;
+             ctx.fillRect(canvas.width/8, canvas.height/6, 2950, 150);
+             ctx.fillStyle = '#2A4385';
+       
+             ctx.fillRect(canvas.width/7.6, canvas.height/5.8, 2900 * details.experience_bar, 120);
+             ctx.fillStyle = '#FFFFFF';
+             ctx.font = '100px MAKISUPA';
+             ctx.fillText(details.experience + " / " + details.experience_next, canvas.width / 2.01, canvas.height / 4.8);
+             //console.log(details.experience_bar)
+             //console.log(details.experience + " / " + details.experience_next) 
+             ctx.stroke();
+             ctx.closePath();
+             ctx.fillStyle = clancolor;
+             ctx.font = '170px MAKISUPA';
+             ctx.fillText(details.level, canvas.width / 14, canvas.height / 4.586);
+             //ctx.fillText(`___________`, canvas.width / 24, canvas.height / 4.2);
+       
+             ctx.textAlign = "center";
+       
+             ctx.font = '110px MAKISUPA';
+             ctx.fillText("Followers", canvas.width/1.20819571865, 280);
+             ctx.textAlign = "right";
+             ctx.fillStyle = '#FFFFFF';
+             ctx.fillText(details.followers, canvas.width/1.33101045296, 280);
+             ctx.textAlign = "center";
+       
+             ctx.font = '110px MAKISUPA';
+             ctx.fillStyle = clancolor;
+             ctx.fillText("VG", canvas.width/1.1394137931, 400);
+             ctx.textAlign = "right";
+             ctx.fillStyle = '#FFFFFF';
+             ctx.fillText(details.coins, canvas.width/1.17419571865, 400);
+             ctx.fillStyle = clancolor;
+             ctx.fillText("Following: ", 2570 , 2420);
+             ctx.fillStyle = '#FFFFFF';
+             ctx.fillText(details.following, 3170 , 2420);
+             ctx.fillStyle = clancolor;
+             ctx.fillText("Game Time: ", canvas.width / 24 , 2420);
+             ctx.fillStyle = '#FFFFFF';
+             ctx.fillText(details.total_game_time, 750 , 2420);
+       
+             // main body
+       
+             //KILLS
+             ctx.font = '70px MAKISUPA';
+             ctx.fillStyle = clancolor;
+             ctx.fillText("Kills", canvas.width / 5.74 , 920);
+             ctx.fillStyle = '#FFFFFF';
+             ctx.font = '140px MAKISUPA';
+             ctx.fillText(details.kills, canvas.width / 5, 820);
+       
+             //games played
+             ctx.font = '70px MAKISUPA';
+             ctx.fillStyle = clancolor;
+             ctx.fillText("Played", canvas.width / 23 , 1300);
+             ctx.fillStyle = '#FFFFFF';
+             ctx.font = '140px MAKISUPA';
+             ctx.fillText(details.total_games_played, canvas.width / 15, 1450);
+       
+             //Deaths
+             ctx.font = '70 MAKISUPA';
+             ctx.fillStyle = clancolor;
+             ctx.fillText("Deaths", canvas.width / 3.53 , 1300);
+             ctx.fillStyle = '#FFFFFF';
+             ctx.font = '140px MAKISUPA';
+             ctx.fillText(details.deaths, canvas.width / 3.28, 1450);
+             
+             //Wins
+             ctx.font = '70px MAKISUPA';
+             ctx.fillStyle = clancolor;
+             ctx.fillText("Wins", canvas.width / 3.25, 1700);
+             ctx.fillStyle = '#FFFFFF';
+             ctx.font = '140px MAKISUPA';
+             ctx.fillText(details.total_games_won, canvas.width / 3.2, 1850);
+             
+             //KDR
+             ctx.font = '70px MAKISUPA';
+             ctx.fillStyle = clancolor;
+             ctx.fillText("KDR", canvas.width / 2, 920);
+             ctx.fillStyle = '#FFFFFF';
+             ctx.font = '140px MAKISUPA';
+             ctx.fillText(details.kdr, canvas.width / 1.9, 820);
+       
+             //TOTAL LOSSES
+             ctx.font = '70px MAKISUPA';
+             ctx.fillStyle = clancolor;
+             ctx.fillText("Losses", canvas.width /1.87, 1300);
+             ctx.fillStyle = '#FFFFFF';
+             ctx.font = '140px MAKISUPA';
+             ctx.fillText(details.total_games_played - details.total_games_won, canvas.width / 1.732, 1450);
+                   
+             //KPG
+             ctx.font = '170px MAKISUPA';
+             ctx.fillStyle = clancolor;
+             ctx.fillText("KPG", canvas.width / 1.3, 900);
+             ctx.fillStyle = '#FFFFFF';
+             ctx.font = '140px MAKISUPA';
+             ctx.fillText(kpg, canvas.width / 1.31, 1050);
+       
+             //KPG
+             ctx.font = '170px MAKISUPA';
+             ctx.fillStyle = clancolor;
+             ctx.fillText("W/L", canvas.width / 1.3, 1300);
+             ctx.fillStyle = '#FFFFFF';
+             ctx.font = '140px MAKISUPA';
+             ctx.fillText(WLR, canvas.width / 1.285, 1450);
+       
+       
+       
+       
+             //beaned players
+             const bannedPlayers = ['NeXi2k', 'cringe', 'aimer'];
+       
+             if(bannedPlayers.includes(details.username_raw)){
+               ctx.fillStyle = '#2A4385';
+               ctx.font = '900px MAKISUPA';
+               ctx.rotate(0.2)
+               ctx.fillStyle = '#FF0000';
+               ctx.fillText('BEANED', 2150, 1300)
+               console.log("BEANED MAN")
+             }
+       
+             const avatar = await Canvas.loadImage(client.user.displayAvatarURL({ format: 'png' })); 
+             ctx.drawImage(avatar, 3495, 2270, 300, 300);
+             */
+
+            levels.fillStyle = '#FFFFFF';
+            levels.font = '140px MAKISUPA';
+            levels.fillText(details.level, 128, 128);
+            const vengelevels = new Discord.MessageAttachment(shiz.toBuffer(), 'levels.png');
+
+            const test = new Discord.MessageAttachment(canvas.toBuffer(), 'example.png');
+
+            const vengg = new Discord.MessageEmbed()
+              .setTitle(person)
+              .setColor("2F3136")
+              .setFooter(foot, client.user.avatarURL())
+              .setTimestamp()
+              .attachFiles(vengelevels)
+              .setThumbnail("attachment://levels.png")
+              //.setThumbnail()
+              .setDescription(`[Venge Profile](https://social.venge.io/#${details.username_raw})\n[${clanshit}](${clanlink})`)
+              .addFields(
+                {
+                  name: "__Account Stats__",
+                  value: `Experience: ` + details.experience
+                    + "\nFollowers: " + details.followers
+                    + "\nFollowing: " + details.following
+                    + `\nVG Coins: ` + details.coins,
+                  inline: true
+
+                },
+                {
+                  name: "__Player Stats__",
+                  value: `Kills: ` + details.kills
+                    + `\nDeaths: ` + details.deaths
+                    + `\nKDR: ` + details.kdr
+                    + "\nKPG: " + kpg
+                    + `\nHeadshots: ` + details.headshots + " (" + headper1 + "%)",
+                  inline: true
+
+                },
+                {
+                  name: "__Total Game Stats__",
+                  value: `Games Played: ` + details.total_games_played
+                    + `\nGames Won: ` + details.total_games_won
+                    + `\nW/L: ` + WLR
+                    + "\nTime: " + details.total_game_time,
+                },
+                {
+                  name: "__Last Match Stats__",
+                  value: `Last Match Kills: ` + details.last_match_kills
+                    + `\nLast Match Headshots: ` + details.last_match_headshots
+                    + `\nLast Match Time: ` + details.last_match_time
+                    + "\nLast Match Place: " + details.last_match_position + placeshiz,
+                  inline: true
+                },
+
+              )
+
+            msg.delete()
+            message.channel.send(vengg);
+            //message.channel.send(test);
+          });
+      })
+  }
     /***
     * 
     *  Venge menu
