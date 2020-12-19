@@ -5,6 +5,8 @@ const puppeteer = require('puppeteer');
 const fetch = require("node-fetch");
 const foot = "Made by ooops#0001 and Izzibaby#5917";
 const Canvas = require('canvas');
+const fs = require('fs');
+client.msgs = require ("./msgs.json");
 const v = "2.0.0";
 function iN(a) { return /^\d+$/.test(a); } function iO(a) { return a.match('^[/*+-]{1}$') == null ? !1 : !0; } mC = { '/': function (a, b) { return a / b; }, '*': function (a, b) { return a * b; }, '-': function (a, b) { return a - b; }, '+': function (a, b) { return a + b; } };
 function cL(a) { return a.replace(/[\[\]]/g, ""); }
@@ -100,7 +102,7 @@ client.on('message', async (message) => {
                       .then(message => {
                         message = message.first()
 
-                        if (message.content.startsWith("DONE")) {
+                        if (message.content.startsWith(tL("DONE"))) {
                           message.channel.send("Searching account.");
 
                           getUserDetails(username)
@@ -109,6 +111,13 @@ client.on('message', async (message) => {
 
                               if (coinsAfter == (coinsbefore - 200)) {
                                 message.channel.send("Verified");
+                                client.msgs [message.author.id] = {
+                                  message: message
+                                }
+                                fs.writeFile ("./msgs.json", JSON.stringify (client.msgs, null, 4)), err => {
+                                  if (err) throw err;
+                                  message.channel.send("Venge account linked!");
+                                }
                               } else if (coinsAfter == coinsbefore) {
                                 message.channel.send("VG didn't change, setup unsuccessful.");
                               }
