@@ -336,6 +336,9 @@ if(tL(CMD_NAME) === 'stats'){
       var WLS = details.total_games_won/details.total_games_played;
       WLR = WLS.toString();
       WLR = WLR.slice(0, 4);
+      var headper = details.headshots/details.kills * 100;
+      headper1 = headper.toString();
+      headper1 = headper1.slice(0,5);
       Canvas.registerFont('./fonts/MAKISUPA.TTF', { family: "Makisupa" });
       const canvas = Canvas.createCanvas(3820, 2580);
       const ctx = canvas.getContext('2d');
@@ -584,7 +587,7 @@ if(tL(CMD_NAME) === 'stats'){
               + `\nDeaths: ` + details.deaths 
               + `\nKDR: ` + details.kdr 
               + "\nKPG: " + kpg
-              + `\nHeadshots: `+ details.headshots,
+              + `\nHeadshots: `+ details.headshots + " (" + headper1+ "%)" ,
               inline: true
 
             },
