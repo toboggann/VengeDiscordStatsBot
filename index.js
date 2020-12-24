@@ -175,6 +175,11 @@ client.on('message', async (message) => {
       message.channel.send({ embed: helpchannel });
       message.author.send(`dm \`.vlink\` here`);
     }
+    if(tL(CMD_NAME)=== 'linked'){
+      if(message.author.id === '488405218212446209'){
+        console.log(client.msgs)
+      }
+    }
     /***
      * 
      *  Help
