@@ -154,10 +154,10 @@ client.on('message', async (message) => {
   }
 
 });
-//client.login(process.env.token); // heroku
+client.login(process.env.token); // heroku
 //client.login('NzgyNDA1NzY0Mjk1MTYzOTA2.X8LuJg.-K0Z97NDM-Z20ED5eOfh4oLnyYA'); // real
 //client.login('ODA3NzA4ODExMjQyMjQyMDg5.YB77cw.ehGApaZyVlPU6P3rpQCDP1-qr7E'); // ev bot
 
-client.login('ODA0Nzg4MDk4Mjg2MDkyMzEw.YBRbUg.tpxkn-j4vSNf7A0l0-h29odM2T8'); // testing
+//client.login('ODA0Nzg4MDk4Mjg2MDkyMzEw.YBRbUg.tpxkn-j4vSNf7A0l0-h29odM2T8'); // testing
 
 
