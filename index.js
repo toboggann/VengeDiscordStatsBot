@@ -130,7 +130,6 @@ client.on('message', async (message) => {
       .setTitle(`Suggestion sent by ${message.author.username}`)
       .setColor("RANDOM")
       .addField('Suggestion: ', `${text}`)
-      .addField('Suggestion Author ID', `${message.author.id}`)
       .setFooter("Suggestion", client.user.displayAvatarURL())
       .setTimestamp() 
 
