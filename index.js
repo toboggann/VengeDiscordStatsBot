@@ -84,7 +84,7 @@ client.on('message', async (message) => {
                 //.attachFiles(vengelevels)
                 //.setThumbnail("attachment://levels.png")
                 //.setThumbnail()
-                .setDescription(`[ev Profile](https://ev.io/stats-by-un/${arg})\n`)
+                .setDescription(`[ev Profile](https://ev.io/user/${stats["uid"][0]["value"]})\n`)
                 .addFields({
                   name: "**__Account Stats:__**",
                   value: `Rank: ${stats["field_rank"][0]["value"]}
