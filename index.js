@@ -44,7 +44,7 @@ client.on('message', async (message) => {
     */
 
     if (tL(CMD_NAME) === "stats"|| tL(CMD_NAME) === "stat") {
-      var arg = message.content.substr(".stats ".length);
+      var arg = message.content.substr(tL(".stats ".length));
       if (!args[0]) {
         const failuser = new Discord.MessageEmbed()
         .setTitle(`**Please give me a username to look up**`)
@@ -110,6 +110,73 @@ client.on('message', async (message) => {
         });
     }
   }
+
+  if (tL(CMD_NAME) === "ID") {
+    var arg = message.content.substr(tL(".id ".length));
+    if (!args[0]) {
+      const failuser = new Discord.MessageEmbed()
+      .setTitle(`**Please give me a username to look up**`)
+      .setDescription("Example:\n.ID 2252")
+      .setColor("2F3136")
+    message.channel.send({ embed: failuser })
+      return;
+    }
+    else{
+      const evfetch = await fetch("https://ev.io/user/" + arg.replace(" ", "%20"))
+
+      .then((res) => res.json())
+      .then((json) => {
+        try {
+          const stats = json[0];
+          console.log(stats["name"][0]["value"]);
+          console.log("____________________________");
+          console.log(arg + " was requested by " + message.author.tag);
+          console.log("https://ev.io/stats-by-un/" + arg);
+          console.log("stats fetched for " + arg);
+          var date = stats["created"][0]["value"]
+          var created = date.split("T") 
+          var time = created[1]
+          var timezone = time.split("+")
+
+          
+          const vengg = new Discord.MessageEmbed()
+            .setTitle("Stats for User:" + arg)
+            .setColor("2F3136")
+            .setFooter(foot, client.user.avatarURL())
+            .setTimestamp()
+            //.attachFiles(vengelevels)
+            //.setThumbnail("attachment://levels.png")
+            //.setThumbnail()
+            .setDescription(`[ev Profile](https://ev.io/user/${arg})\n`)
+            .addFields({ //
+              name: "**__Account Stats:__**",
+              value: `Name: ${stats["name"][0]["value"]}
+              Rank: ${stats["field_rank"][0]["value"]}
+              KDR: ${stats["field_k_d"][0]["value"]}
+              Kills: ${stats["field_kills"][0]["value"]} 
+              Deaths: ${stats["field_deaths"][0]["value"]}
+              Total Games: ${stats["field_total_games"][0]["value"]}\n
+              Coins: ${stats["field_ev_coins"][0]["value"]}
+              Date Created: ${created[0]}
+              Time Created: ${timezone[0]}`,
+              inline: true,
+            });
+
+
+          message.channel.send({ embed: vengg });
+        } 
+        catch {
+          console.log(arg)
+          const fail = new Discord.MessageEmbed()
+          .setTitle(`:x: **No Such user**`)
+          .setDescription("Please try again")
+          .setColor("2F3136")
+          
+        message.channel.send({ embed: fail })
+        }
+      });
+  }
+}
 
   if (tL(CMD_NAME) === 'suggestion') {
 
