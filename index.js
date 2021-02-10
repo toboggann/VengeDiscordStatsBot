@@ -117,8 +117,7 @@ client.on('message', async (message) => {
       }
     }
 
-    /*if (tL(CMD_NAME) === "id") {
-      var arg = message.content.substr(".id ".length);
+   if (tL(CMD_NAME) === "id") {
       if (!args[0]) {
         const failuser = new Discord.MessageEmbed()
         .setTitle(`**Please give me an to look up**`)
@@ -135,18 +134,19 @@ client.on('message', async (message) => {
         .then((json) => {
           try {
             const stats = json[0];
-            console.log(stats["name"][0]["value"]);
+            console.log(["name"]["value"]);
             console.log("____________________________");
-            console.log(arg + " was requested by " + message.author.tag);
-            console.log("https://ev.io/stats-by-un/" + arg);
-            console.log("stats fetched for " + arg);
-            var date = stats["created"][0]["value"]
+            console.log("id " + args[0] + " was requested by " + message.author.tag);
+            console.log("stats fetched for " + args[0]);
+            console.log("https://ev.io/user/" + args[0] +"?_format=json");
+            message.channel.send("soon tm")
+            /*var date = stats["created"][0]["value"]
             var created = date.split("T") 
             var time = created[1]
             var timezone = time.split("+")
   
             
-            const vengg = new Discord.MessageEmbed()
+             /*const vengg = new Discord.MessageEmbed()
               .setTitle("Stats for User:" + args[0])
               .setColor("2F3136")
               .setFooter(foot, client.user.avatarURL())
@@ -170,7 +170,7 @@ client.on('message', async (message) => {
               });
   
   
-            message.channel.send({ embed: vengg });
+            message.channel.send({ embed: vengg });  */
           } 
           catch {
             console.log(arg)
@@ -184,7 +184,7 @@ client.on('message', async (message) => {
         });
     }
   }
-  */
+
     if (tL(CMD_NAME) === 'suggestion') {
 
       if (message.channel.id === '799717973765259305') {
@@ -224,6 +224,47 @@ client.on('message', async (message) => {
       }
     }
 
+    if (tL(CMD_NAME) === "help") {
+
+    const vengg = new Discord.MessageEmbed()
+              .setTitle("Ev bot Commands")
+              .setColor("2F3136")
+              .setFooter(foot, client.user.avatarURL())
+              .setTimestamp()
+              //.attachFiles(vengelevels)
+              //.setThumbnail("attachment://levels.png")
+              //.setThumbnail()
+              .setURL("https://discord.com/api/oauth2/authorize?client_id=804788098286092310&permissions=8&scope=bot")
+              .setDescription(`prefix .\n`)
+              .addFields({ //
+                name: "stats <username>",
+                value: `Shows the stats of the given user`,
+                inline: true,
+              })
+              .addFields({ //
+                name: ".suggestion <suggestion>",
+                value: `can only be done in <#799717973765259305>`,
+                inline: true,
+              })
+              .addFields({ //
+                name: ".id <id>",
+                value: `coming soon`,
+                inline: false,
+              })
+              .addFields({ //
+                name: ".lb <lb>",
+                value: `coming soon`,
+                inline: false,
+              })
+              .addFields({ //
+                name: "More info",
+                value: `You can now invite the bot to your own server Click the blue text at the top of this embed`,
+                inline: false,
+              });
+  
+  
+            message.author.send({ embed: vengg })
+            }
   }
 
 });
