@@ -225,7 +225,10 @@ client.on('message', async (message) => {
     }
 
     if (tL(CMD_NAME) === "help") {
-
+      const helpchannel = new Discord.MessageEmbed()
+      .setTitle(":e_mail:  You've Recieved Mail")
+      .setColor(0x2F3136)
+      const embed = new Discord.MessageEmbed()
     const vengg = new Discord.MessageEmbed()
               .setTitle("Ev bot Commands")
               .setColor("2F3136")
@@ -261,9 +264,12 @@ client.on('message', async (message) => {
                 value: `You can now invite the bot to your own server Click the blue text at the top of this embed`,
                 inline: false,
               });
-  
-  
-            message.author.send({ embed: vengg })
+              message.channel.send({ embed: helpchannel })
+              message.author.send({ embed: vengg })
+           /* message.channel.send({ embed: helpchannel }).then(m => {
+              m.delete(3000) //Deletes the message after 10000 milliseconds (10 seconds)
+           })*/
+
             }
   }
 
