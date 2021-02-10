@@ -44,7 +44,7 @@ client.on('message', async (message) => {
     */
 
     if (tL(CMD_NAME) === "stats"|| tL(CMD_NAME) === "stat") {
-      var arg = message.content.substr(tL(".stats ".length));
+      var arg = message.content.substr(".stats ".length);
       if (!args[0]) {
         const failuser = new Discord.MessageEmbed()
         .setTitle(`**Please give me a username to look up**`)
@@ -112,7 +112,7 @@ client.on('message', async (message) => {
   }
 
   if (tL(CMD_NAME) === "ID") {
-    var arg = message.content.substr(tL(".id ".length));
+    var arg = message.content.substr(".id ".length);
     if (!args[0]) {
       const failuser = new Discord.MessageEmbed()
       .setTitle(`**Please give me a username to look up**`)
