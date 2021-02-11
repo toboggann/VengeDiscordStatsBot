@@ -234,7 +234,9 @@ client.on('message', async (message) => {
           .setTimestamp()
 
 
-        schannel.send(sembed)
+        schannel.send(sembed).then((sugmsg) => {
+          sugmsg.react("👍").then(() => sugmsg.react("👎"));
+      });
 
 
         if (message.content.startsWith('.suggestion') && message.channel.id === '799717973765259305') {
