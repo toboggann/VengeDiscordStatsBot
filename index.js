@@ -94,7 +94,6 @@ client.on('message', async (message) => {
                 //.setThumbnail()
                 //.setDescription(`[ev Profile]()\n`)
 
-                .setURL(`https://ev.io/user/${stats["uid"][0]["value"]}`)
                 .setDescription(`**Username:** [${stats["name"][0]["value"]}](https://ev.io/user/${stats["uid"][0]["value"]})\r\n` +
                   `**Total games:** ${stats["field_total_games"][0]["value"]}\r\n` +
                   `**EvCoins:** ${stats["field_ev_coins"][0]["value"]}\r\n` +
