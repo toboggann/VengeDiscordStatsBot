@@ -85,7 +85,7 @@ client.on('message', async (message) => {
                   })
 
               const vengg = new Discord.MessageEmbed()
-                .setTitle(stats["name"][0]["value"])
+                .setTitle(`**__Account Stats__**`)
                 .setColor("2F3136")
                 .setFooter(foot, client.user.avatarURL())
                 .setTimestamp()
