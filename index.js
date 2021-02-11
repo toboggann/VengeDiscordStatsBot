@@ -3,7 +3,7 @@ const client = new Discord.Client();
 const PREFIX = ".";
 //const puppeteer = require('puppeteer');
 const fetch = require("node-fetch");
-const foot = "Made by ooops#0001";
+const foot = "Made by ooops#0001 & Powered#3959";
 //const Canvas = require('canvas');
 const fs = require('fs');
 //client.msgs = require("./msgs.json");
@@ -57,7 +57,7 @@ client.on('message', async (message) => {
         const evfetch = await fetch("https://ev.io/stats-by-un/" + arg.replace(" ", "%20"))
 
           .then((res) => res.json())
-          .then((json) => {
+          .then(async (json) => {
             try {
 
 
@@ -70,11 +70,19 @@ client.on('message', async (message) => {
               console.log(arg + " was requested by " + message.author.tag);
               console.log("https://ev.io/stats-by-un/" + arg);
               console.log("stats fetched for " + arg);
-              var date = stats["created"][0]["value"]
-              var created = date.split("T")
-              var time = created[1]
-              var timezone = time.split("+")
-
+              var date = new Date(stats["created"][0]["value"])
+              var now = new Date()
+              var Difference_In_Time = now.getTime() - date.getTime();
+              var Difference_In_Days = Math.trunc(Difference_In_Time / (1000 * 3600 * 24));
+              var timezone = stats["created"][0]["value"].split("+")
+              timezone[1] = timezone[1] == "00:00" ? "" : " + " + timezone[1];
+              let image;
+              const imagefetch = await fetch("https://ev.io" + stats["field_eq_skin"][0]["url"])
+                  .then((res) => res.text())
+                  .then((body) => {
+                      const splitbdy = body.split('<img src="')
+                      image = splitbdy[splitbdy.length - 1].substring(0, splitbdy[splitbdy.length - 1].lastIndexOf(".png"))
+                  })
 
               const vengg = new Discord.MessageEmbed()
                 .setTitle(stats["name"][0]["value"])
@@ -84,25 +92,112 @@ client.on('message', async (message) => {
                 //.attachFiles(vengelevels)
                 //.setThumbnail("attachment://levels.png")
                 //.setThumbnail()
-                .setDescription(`[ev Profile](https://ev.io/user/${stats["uid"][0]["value"]})\n`)
-                .addFields({
+                //.setDescription(`[ev Profile]()\n`)
+
+                .setURL(`https://ev.io/user/${stats["uid"][0]["value"]}`)
+                .setDescription(`**Username:** [${stats["name"][0]["value"]}](https://ev.io/user/${stats["uid"][0]["value"]})\r\n` +
+                  `**Total games:** ${stats["field_total_games"][0]["value"]}\r\n` +
+                  `**EvCoins:** ${stats["field_ev_coins"][0]["value"]}\r\n` +
+                  `**Kills:** ${stats["field_kills"][0]["value"]}\r\n` +
+                  `**Deaths:** ${stats["field_deaths"][0]["value"]}\r\n` +
+                  `**KDR:** ${stats["field_k_d"][0]["value"]}\r\n` +
+                  `**KPG:** ${kpg}\r\n \r\n` +
+
+                  `**Created:** ${Difference_In_Days} Days ago\r\n`)
+
+              if (stats["field_twitch"][0] !== undefined) {
+                let twitch = stats["field_twitch"][0]["value"].split("/")
+                twitch = twitch[twitch.length - 1]
+                vengg.addField("Twitch:", `[${twitch}](${stats["field_twitch"][0]["value"]})`, true)
+              }
+              if (stats["field_youtube"][0] !== undefined) {
+                try {
+                    let ytname;
+                    const youtubefetch = await fetch(stats["field_youtube"][0]["value"])
+                        .then((res) => res.text())
+                        .then((body) => {
+                            const splitbdy = body.split(' "name": "')
+                            ytname = splitbdy[splitbdy.length - 1].substring(0, splitbdy[splitbdy.length - 1].lastIndexOf('"}}]}</script>'))
+                        })
+                    if (ytname != "") {
+                        vengg.addField("Youtube:", `[${ytname}](${stats["field_youtube"][0]["value"]})`, true)
+                    }
+                } catch {
+
+                }
+            }
+            vengg.setThumbnail("https://ev.io" + image + ".png");
+
+            message.channel.send(vengg);
+                }
+                catch(error) {
+                  console.log(arg)
+                  console.error("Something went wrong when fetching the message: ", error);
+                  const fail = new Discord.MessageEmbed()
+                    .setTitle(`:x: **No Such user**`)
+                    .setDescription("Please try again")
+                    .setColor("2F3136")
+
+                  message.channel.send({ embed: fail })
+                }
+              });
+      }
+    }
+
+    if (tL(CMD_NAME) === "id") {
+      if (!args[0]) {
+        const failuser = new Discord.MessageEmbed()
+          .setTitle(`**Please give me an to look up**`)
+          .setDescription("Example:\n.ID 2252")
+          .setColor("2F3136")
+        message.channel.send({ embed: failuser })
+        return;
+      }
+      else {
+        console.log('here is good')
+        const evfetch = await fetch("https://ev.io/user/" + args[0] + "?_format=json")
+
+          .then((res) => res.json())
+          .then((json) => {
+            try {
+              const stats = json[0];
+              console.log(["name"]["value"]);
+              console.log("____________________________");
+              console.log("id " + args[0] + " was requested by " + message.author.tag);
+              console.log("stats fetched for " + args[0]);
+              console.log("https://ev.io/user/" + args[0] + "?_format=json");
+              message.channel.send("soon tm")
+              /*var date = stats["created"][0]["value"]
+              var created = date.split("T") 
+              var time = created[1]
+              var timezone = time.split("+")
+    
+              
+               /*const vengg = new Discord.MessageEmbed()
+                .setTitle("Stats for User:" + args[0])
+                .setColor("2F3136")
+                .setFooter(foot, client.user.avatarURL())
+                .setTimestamp()
+                //.attachFiles(vengelevels)
+                //.setThumbnail("attachment://levels.png")
+                //.setThumbnail()
+                .setDescription(`[ev Profile](https://ev.io/user/${arg})\n`)
+                .addFields({ //
                   name: "**__Account Stats:__**",
-                  value: `Rank: ${stats["field_rank"][0]["value"]}
-                KDR: ${stats["field_k_d"][0]["value"]}
-                Kills: ${stats["field_kills"][0]["value"]} 
-                Deaths: ${stats["field_deaths"][0]["value"]}
-                Total Games: ${stats["field_total_games"][0]["value"]}
-                Kpg: ${kpg}\n
-                Coins: ${stats["field_ev_coins"][0]["value"]}
-                Date Created: ${created[0]}
-                Time Created: ${timezone[0]}
-                
-                User ID: ${stats["uid"][0]["value"]} `,
+                  value: `Name: ${stats["name"][0]["value"]}
+                  Rank: ${stats["field_rank"][0]["value"]}
+                  KDR: ${stats["field_k_d"][0]["value"]}
+                  Kills: ${stats["field_kills"][0]["value"]} 
+                  Deaths: ${stats["field_deaths"][0]["value"]}
+                  Total Games: ${stats["field_total_games"][0]["value"]}\n
+                  Coins: ${stats["field_ev_coins"][0]["value"]}
+                  Date Created: ${created[0]}
+                  Time Created: ${timezone[0]}`,
                   inline: true,
                 });
-
-
-              message.channel.send({ embed: vengg });
+    
+    
+              message.channel.send({ embed: vengg });  */
             }
             catch {
               console.log(arg)
@@ -116,74 +211,6 @@ client.on('message', async (message) => {
           });
       }
     }
-
-   if (tL(CMD_NAME) === "id") {
-      if (!args[0]) {
-        const failuser = new Discord.MessageEmbed()
-        .setTitle(`**Please give me an to look up**`)
-        .setDescription("Example:\n.ID 2252")
-        .setColor("2F3136")
-      message.channel.send({ embed: failuser })
-        return;
-      }
-      else{
-        console.log('here is good')
-        const evfetch = await fetch("https://ev.io/user/" + args[0] +"?_format=json")
-  
-        .then((res) => res.json())
-        .then((json) => {
-          try {
-            const stats = json[0];
-            console.log(["name"]["value"]);
-            console.log("____________________________");
-            console.log("id " + args[0] + " was requested by " + message.author.tag);
-            console.log("stats fetched for " + args[0]);
-            console.log("https://ev.io/user/" + args[0] +"?_format=json");
-            message.channel.send("soon tm")
-            /*var date = stats["created"][0]["value"]
-            var created = date.split("T") 
-            var time = created[1]
-            var timezone = time.split("+")
-  
-            
-             /*const vengg = new Discord.MessageEmbed()
-              .setTitle("Stats for User:" + args[0])
-              .setColor("2F3136")
-              .setFooter(foot, client.user.avatarURL())
-              .setTimestamp()
-              //.attachFiles(vengelevels)
-              //.setThumbnail("attachment://levels.png")
-              //.setThumbnail()
-              .setDescription(`[ev Profile](https://ev.io/user/${arg})\n`)
-              .addFields({ //
-                name: "**__Account Stats:__**",
-                value: `Name: ${stats["name"][0]["value"]}
-                Rank: ${stats["field_rank"][0]["value"]}
-                KDR: ${stats["field_k_d"][0]["value"]}
-                Kills: ${stats["field_kills"][0]["value"]} 
-                Deaths: ${stats["field_deaths"][0]["value"]}
-                Total Games: ${stats["field_total_games"][0]["value"]}\n
-                Coins: ${stats["field_ev_coins"][0]["value"]}
-                Date Created: ${created[0]}
-                Time Created: ${timezone[0]}`,
-                inline: true,
-              });
-  
-  
-            message.channel.send({ embed: vengg });  */
-          } 
-          catch {
-            console.log(arg)
-            const fail = new Discord.MessageEmbed()
-            .setTitle(`:x: **No Such user**`)
-            .setDescription("Please try again")
-            .setColor("2F3136")
-            
-          message.channel.send({ embed: fail })
-          }
-        });
-    }
-  }
 
     if (tL(CMD_NAME) === 'suggestion') {
 
@@ -226,51 +253,51 @@ client.on('message', async (message) => {
 
     if (tL(CMD_NAME) === "help") {
       const helpchannel = new Discord.MessageEmbed()
-      .setTitle(":e_mail:  You've Recieved Mail")
-      .setColor(0x2F3136)
+        .setTitle(":e_mail:  You've Recieved Mail")
+        .setColor(0x2F3136)
       const embed = new Discord.MessageEmbed()
-    const vengg = new Discord.MessageEmbed()
-              .setTitle("Ev bot Commands")
-              .setColor("2F3136")
-              .setFooter(foot, client.user.avatarURL())
-              .setTimestamp()
-              //.attachFiles(vengelevels)
-              //.setThumbnail("attachment://levels.png")
-              //.setThumbnail()
-              .setURL("https://discord.com/api/oauth2/authorize?client_id=804788098286092310&permissions=8&scope=bot")
-              .setDescription(`prefix .\n`)
-              .addFields({ //
-                name: "stats <username>",
-                value: `Shows the stats of the given user`,
-                inline: true,
-              })
-              .addFields({ //
-                name: ".suggestion <suggestion>",
-                value: `can only be done in <#799717973765259305>`,
-                inline: true,
-              })
-              .addFields({ //
-                name: ".id <id>",
-                value: `coming soon`,
-                inline: false,
-              })
-              .addFields({ //
-                name: ".lb <lb>",
-                value: `coming soon`,
-                inline: false,
-              })
-              .addFields({ //
-                name: "More info",
-                value: `You can now invite the bot to your own server Click the blue text at the top of this embed`,
-                inline: false,
-              });
-              message.channel.send({ embed: helpchannel })
-              message.author.send({ embed: vengg })
-           /* message.channel.send({ embed: helpchannel }).then(m => {
-              m.delete(3000) //Deletes the message after 10000 milliseconds (10 seconds)
-           })*/
+      const vengg = new Discord.MessageEmbed()
+        .setTitle("Ev bot Commands")
+        .setColor("2F3136")
+        .setFooter(foot, client.user.avatarURL())
+        .setTimestamp()
+        //.attachFiles(vengelevels)
+        //.setThumbnail("attachment://levels.png")
+        //.setThumbnail()
+        .setURL("https://discord.com/api/oauth2/authorize?client_id=804788098286092310&permissions=8&scope=bot")
+        .setDescription(`prefix .\n`)
+        .addFields({ //
+          name: "stats <username>",
+          value: `Shows the stats of the given user`,
+          inline: true,
+        })
+        .addFields({ //
+          name: ".suggestion <suggestion>",
+          value: `can only be done in <#799717973765259305>`,
+          inline: true,
+        })
+        .addFields({ //
+          name: ".id <id>",
+          value: `coming soon`,
+          inline: false,
+        })
+        .addFields({ //
+          name: ".lb <lb>",
+          value: `coming soon`,
+          inline: false,
+        })
+        .addFields({ //
+          name: "More info",
+          value: `You can now invite the bot to your own server Click the blue text at the top of this embed`,
+          inline: false,
+        });
+      message.channel.send({ embed: helpchannel })
+      message.author.send({ embed: vengg })
+      /* message.channel.send({ embed: helpchannel }).then(m => {
+         m.delete(3000) //Deletes the message after 10000 milliseconds (10 seconds)
+      })*/
 
-            }
+    }
   }
 
 });
