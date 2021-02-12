@@ -37,12 +37,20 @@ client.on('message', async (message) => {
       .substring(PREFIX.length)
       .split(/\s+/);
 
+      if (tL(CMD_NAME) === "invite") {
+          const failuser = new Discord.MessageEmbed()
+            .setTitle(`INVITE`)
+            .setColor("2F3136")
+            .setURL(`https://discord.com/oauth2/authorize?client_id=804788098286092310&permissions=8&scope=bot`)
+          message.author.send({ embed: failuser })
+        }
+      
     /***
     * 
     *  Venge stats
     * 
     */
-
+   
     if (tL(CMD_NAME) === "stats" || tL(CMD_NAME) === "stat") {
       var arg = message.content.substr(".stats ".length);
       if (!args[0]) {
@@ -268,7 +276,7 @@ client.on('message', async (message) => {
         .setURL("https://discord.com/api/oauth2/authorize?client_id=804788098286092310&permissions=8&scope=bot")
         .setDescription(`prefix .\n`)
         .addFields({ //
-          name: "stats <username>",
+          name: ".stats <username>",
           value: `Shows the stats of the given user`,
           inline: true,
         })
@@ -288,8 +296,8 @@ client.on('message', async (message) => {
           inline: false,
         })
         .addFields({ //
-          name: "More info",
-          value: `You can now invite the bot to your own server Click the blue text at the top of this embed`,
+          name: ".invite",
+          value: `Sends invite link to you so you can have me in your own server!\rYou can also just click the blue text at the top!`,
           inline: false,
         });
       message.channel.send({ embed: helpchannel })
