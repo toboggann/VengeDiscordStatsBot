@@ -103,7 +103,7 @@ client.on('message', async (message) => {
                 //.setDescription(`[ev Profile]()\n`)
 
                 .setDescription(`**Username:** [${stats["name"][0]["value"]}](https://ev.io/user/${stats["uid"][0]["value"]})\r\n` +
-                  `**Rank:** ${stats["field_rank"][0]["value"]}\r\n` +
+                  `**Rating:** ${stats["field_rank"][0]["value"]}\r\n` +
                   `**Total games:** ${stats["field_total_games"][0]["value"]}\r\n` +
                   `**EvCoins:** ${stats["field_ev_coins"][0]["value"]}\r\n` +
                   `**Kills:** ${stats["field_kills"][0]["value"]}\r\n` +
